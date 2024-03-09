@@ -7,12 +7,528 @@
 
 
 <script setup>
-
+import Checkout from './components/Checkout.vue';
+import Lessons from './components/Lessons.vue';
 </script>
 
 
 
 <style>
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f1c3bc93;
+}
 
+/* Header styles */
+.navbar {
+  background-color: #333;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+}
+
+.logo-image {
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.cart-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 999; /* Ensure it's on top of other elements if necessary */
+}
+
+.cart-count {
+  background-color: #ff9a8a93;
+  color: #fff;
+  border-radius: 50%;
+  padding: 4px;
+  margin-left: 4px;
+}
+
+/* Main content styles */
+/* Search Container */
+.search-container {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center; /* Center the search box horizontally */
+}
+
+#search {
+  width: 60%; /* Adjust the width as needed */
+  max-width: 300px; /* Set a maximum width if necessary */
+  padding: 0.5rem;
+  border: 2px solid #ddd;
+  border-radius: 0.25rem;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
+}
+
+#search:focus {
+  border-color: #F73212;
+}
+
+/* Filter and Order Container */
+.filter-container,
+.order-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column; /* Arrange options in a column */
+  align-items: center; /* Center the filter and order sections horizontally */
+}
+
+.filter-heading,
+.order-heading {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem; /* Add some space between heading and options */
+}
+
+.filter-options,
+.order-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center; /* Center the options horizontally */
+}
+
+.filter-option,
+.order-option {
+  display: flex;
+  align-items: center;
+}
+
+/* Example: Make the filter and order options smaller */
+.filter-options label,
+.order-options label {
+  font-size: 0.8rem;
+  margin-right: 0.2rem;
+}
+
+.filter-options select,
+.order-options select {
+  font-size: 0.8rem;
+}
+
+/* Updated CSS for Filter and Order Container */
+.filter-container,
+.order-container {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-heading,
+.order-heading {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+/* Lessons Container */
+.lessons-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center; /* Center the lessons horizontally */
+}
+
+.lesson-item {
+  background-color: white;
+  border: 2px solid black;
+  box-shadow: 0 2px 8px rgb(64, 47, 255);
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px 0;
+  text-align: center;
+  width: calc(25% - 20px); /* Adjust the width based on your design */
+  flex: 1 0 calc(25% - 1rem); /* Adjust the flex property */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.lesson-item:hover {
+  transform: scale(1.05);
+}
+
+.lesson-details {
+  flex: 1;
+}
+
+.lesson-image {
+  width: 100%; /* Make the image fill the container */
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease-in-out; 
+}
+
+/* Add a hover effect to scale the image slightly on hover */
+.lesson-item:hover .lesson-image {
+  transform: scale(1.05);
+}
+
+.lesson-info {
+  text-align: center;
+}
+
+.lesson-info p {
+  margin: 0.5rem 0;
+}
+
+.lesson-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lesson-actions button {
+  background-color: #ff9a8a93; /* Pink button color */
+  color: #fff; /* White text color */
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Add a smooth transition effect */
+}
+
+.lesson-actions button:hover {
+  background-color: rgb(64, 47, 255); /* Blue hover color */
+  color: #fff; /* White text color on hover */
+}
+
+/* Loading and Error Container */
+.loading-container,
+.error-container {
+  margin-top: 1rem;
+}
+
+.loading-frame,
+.error-frame {
+  width: 50%;
+}
+/* Lessons Container */
+.lessons-container,
+.empty-lessons-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.lesson-item,
+.empty-lessons-container {
+  width: 100%;
+}
+
+.lesson-details {
+  flex: 1;
+}
+
+.lesson-image {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.lesson-actions {
+  margin-top: 0.5rem;
+}
+
+/* Empty Cart Container */
+.empty-cart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.empty-cart-icon {
+  color: #A0AEC0;
+}
+
+.empty-cart-message {
+  margin-top: 0.5rem;
+}
+
+/* Checkout Page Styling */
+#cart {
+  margin-top: 1rem;
+}
+
+.cart-heading {
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+/* .cart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+} */
+
+.cart-grid {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center; /* Center the lessons horizontally */
+}
+
+.cart-item {
+  border: 0.125rem solid #ddd;
+  background-color: white;
+  border-color: #333;
+  border-radius: 0.3125rem;
+  width: 25rem;
+  padding: 1.50rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  margin-left: 10x;
+  margin-bottom: 20px; /* Adjust the margin-bottom to create space between cart items */
+}
+
+.cart-details {
+  flex: 1;
+  width: 100%;
+}
+
+.cart-image {
+  width: 100%;
+  height: auto; /* Adjust the height to be determined by the image */
+  object-fit: cover;
+  border-radius: 0.3125rem;
+  margin-top: 1rem; /* Adjust the margin-top to create space between image and details */
+}
+
+.cart-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Cart Summary Container */
+.cart-summary-container {
+  margin-top: 1rem;
+}
+
+.cart-summary {
+  border: 0.125rem solid #ddd;
+  border-radius: 0.3125rem;
+  padding: 1.25rem;
+}
+
+.summary-heading {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+/* Checkout Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ddd;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px; /* Set a maximum width for the input container */
+  margin-bottom: 1rem; /* Add some space between the input fields */
+}
+
+#name {
+  flex: 1; /* Make the name input take up available space */
+  margin-right: 0.5rem; /* Add some space between the name and phone inputs */
+  border: 2px solid black;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
+}
+
+#phone {
+  flex: 1; /* Make the phone input take up available space */
+  margin-left: 0.5rem; /* Add some space between the name and phone inputs */
+  border: 2px solid black;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
+}
+
+#name:focus,
+#phone:focus {
+  border-color: #F73212;
+}
+
+label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="tel"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 0.125rem solid black;
+  border-radius: 0.3125rem;
+  transition: border-color 0.2s ease-in-out;
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus {
+  border-color: #F73212;
+}
+
+button {
+  background-color: #ff9a8a93;
+  color: #fff;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+  background-color: rgb(64, 47, 255);
+}
+
+/* Toast Container Styling */
+.toast-container {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  max-width: 20rem;
+  color: #333;
+  background-color: #fff;
+  border-radius: 0.375rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 2rem;
+  right: 4rem;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.75rem;
+  background-color:  #ff9a8a93;
+  border-radius: 0.375rem;
+}
+
+.check-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill:  black;
+}
+
+.message-container {
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.close-button {
+  margin-left: auto;
+  margin-right: -0.375rem;
+  margin-top: -0.375rem;
+  background-color: #fff;
+  color: #666;
+  border: none;
+  padding: 0.375rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.close-button:hover {
+  background-color: #F73212;
+  color: #fff;
+}
+
+.close-icon {
+  width: 1rem;
+  height: 1rem;
+  fill: #666;
+}
+
+.close-button.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+.close-button.dark:hover {
+  background-color: #F73212;
+  color: #fff;
+}
+
+/* Footer Styling */
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
 
 </style>
