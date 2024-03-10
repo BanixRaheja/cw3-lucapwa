@@ -5,7 +5,7 @@
       <Header :siteName="siteName" :cartLength="cart.length" @change="toggleCartDisplay"> </Header>
       <!-- Header Section -->
      
-      <!-- <main v-if="active === 'Lessons'" class="mt-4">
+      <main v-if="active === 'Lessons'" class="mt-4">
           <div v-if="!isCartDisplaying" id="lessons" class="responsive-container">
           <div class="search-container">
             <input
@@ -63,7 +63,7 @@
          
         </div>
 
-        </main> -->
+        </main>
 
 
         <!-- Vue Component switching with dynamic components -->
@@ -75,7 +75,7 @@
         ></component>
         
 
-        <!-- <transition
+        <transition
         enter-active-class="transition ease-out duration-200 transform"
         enter-from-class="-translate-y-2"
         enter-to-class="translate-y-0"
@@ -129,7 +129,7 @@
             </svg>
           </button>
         </div>
-      </transition> -->
+      </transition>
 
 
     </div>
