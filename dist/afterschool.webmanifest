@@ -4,12 +4,12 @@
     "description": " My online after school store",
     "icons": [
         {
-            "src": "Images/icon-32.png ",
+            "src": "icon-32.png ",
             "sizes": "50x50",
             "type" : "image/png"
         },
         {
-            "src": "Images/icon-512.png",
+            "src": "icon-512.png",
             "sizes": "512x512",
             "type":"image/png"
         }
