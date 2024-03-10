@@ -100,9 +100,7 @@ export default {
        // EVEVT Emitter
        removeFromCart(lesson){
            this.$emit("remove-item-from-cart",lesson);
-           if(this.cart.length === 0){
-            window.location.href='/';
-           }
+          
        },
        checkout(){
            this.$emit("checkout-order");

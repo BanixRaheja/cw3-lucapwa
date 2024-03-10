@@ -2,47 +2,10 @@
 
 <template>
 <div id="app">
+      <Header :siteName="siteName" :cartLength="cart.length" @change="toggleCartDisplay"> </Header>
       <!-- Header Section -->
-      <header>
-        <!-- Navigation -->
-        <nav class="navbar">
-          <div class="navbar-container">
-            <a href="javascript:void(0)" class="logo">
-              <img
-                src="https://ik.imagekit.io/0vdhtgagut/icon_uad6rbD3V?updatedAt=1706410663671"
-                alt="Flowbite Logo"
-                class="logo-image"
-              />
-              <span class="logo-text"
-                >After School Club - Coursework Part2</span
-              >
-            </a>
-
-            <button
-              class="cart-button"
-              :class="[cartLength <= 0 ? 'empty' : 'notEmpty']"
-              :disabled="cartLength <= 0"
-              @click.prevent="toggleCartDisplay"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                class="cart-icon"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                />
-              </svg>
-              <span class="cart-count">{{ cartLength }}</span>
-            </button>
-          </div>
-        </nav>
-      </header>
-      <main v-if="active === 'Lessons'" class="mt-4">
+     
+      <!-- <main v-if="active === 'Lessons'" class="mt-4">
           <div v-if="!isCartDisplaying" id="lessons" class="responsive-container">
           <div class="search-container">
             <input
@@ -100,19 +63,19 @@
          
         </div>
 
-        </main>
+        </main> -->
 
 
         <!-- Vue Component switching with dynamic components -->
         <component
-        :is="active" :filteredLessons="filteredLessons" :cart="cart"
+        :is="page" :filteredLessons="filteredLessons" :cart="cart"
         :checkoutForm="checkoutForm"
         @add-item-to-cart = "addToCart" @remove-item-from-cart = "removeFromCart" :isCheckoutFormValid="isCheckoutFormValid"
         @checkout-order="checkout"
         ></component>
         
 
-        <transition
+        <!-- <transition
         enter-active-class="transition ease-out duration-200 transform"
         enter-from-class="-translate-y-2"
         enter-to-class="translate-y-0"
@@ -166,7 +129,7 @@
             </svg>
           </button>
         </div>
-      </transition>
+      </transition> -->
 
 
     </div>
@@ -177,17 +140,21 @@
 <script>
 import Checkout from './components/Checkout.vue';
 import Lessons from './components/Lessons.vue';
+import Header from './components/Header.vue'
 
 export default {
   name: 'App',
   components: {
     Checkout,
-    Lessons
+    Lessons,
+    Header
   },
   data(){
     return{
-      active:'Lessons',
+      active: Lessons,
+      page: "Lessons",
       loading: false,
+      siteName: "After School Club - Coursework Part2",
     error: null,
     url: "https://webcoursework2.eu-north-1.elasticbeanstalk.com",
     searchText: "",
@@ -331,12 +298,24 @@ export default {
       if (!this.cart.length) this.toggleCartDisplay();
     },
     toggleCartDisplay() {
-     if(this.active = "Lessons") {
-       this.active = "Checkout"
-     }
-     else {
-       this.active = "Lessons"
-     }
+     
+      if(this.page == "Lessons"){
+  
+        this.page = "Checkout";
+
+      }
+      else if(this.page == "Checkout"){
+       
+        this.page = "Lessons"
+      }
+      else{
+        this.page = "Lessons";
+      }
+      
+      
+      
+      
+    
     },
     checkout() {
      
@@ -356,7 +335,7 @@ export default {
 
       this.checkedOut = true;
 
-      this.active="Lessons";
+      this.active = Lessons;
 
       this.cart = [];
 
