@@ -5,7 +5,7 @@
       <Header :siteName="siteName" :cartLength="cart.length" @change="toggleCartDisplay"> </Header>
       <!-- Header Section -->
      
-      <main v-if="active === 'Lessons'" class="mt-4">
+      <main v-if="page === 'Lessons'" class="mt-4">
           <div v-if="!isCartDisplaying" id="lessons" class="responsive-container">
           <div class="search-container">
             <input
